@@ -144,7 +144,10 @@ class TestExamenStream {
             List<Oficina> list = oficinaHome.findAll();
 
             //TODO STREAMS
-            var solList = list.stream();
+            var solList = list.stream()
+                    .filter(ofi -> ofi.getPais().equals("España"))
+                    .map(f -> "Nombre Oficina: "+ f.getCiudad() + " Tlf: " +f.getTelefono())
+                    .sorted();
 
             solList.forEach(System.out::println);
 
@@ -172,7 +175,9 @@ class TestExamenStream {
             List<Empleado> list = empleadoHome.findAll();
 
             //TODO STREAMS
-            var solList = list.stream();
+            var solList = list.stream()
+                    .filter(ofi -> ofi.getJefe()!=null && ofi.getJefe().getCodigoEmpleado()==7)
+                    .map(f -> "Nombre : "+ f.getNombre() + " Apellidos: " +f.getApellido1()+", "+f.getApellido2() + " Email: " +f.getEmail() + " Cod jefe: " + f.getJefe().getCodigoEmpleado());
 
             solList.forEach(System.out::println);
 
@@ -200,7 +205,12 @@ class TestExamenStream {
             List<Cliente> list = clienteHome.findAll();
 
             //TODO STREAMS
-            var solList = list.stream();
+            var solList = list.stream().sorted(comparing( (Cliente p) -> p.getRepresentanteVentas().getApellido1())
+                    .thenComparing(comparing(Cliente::getNombreCliente)))
+                    .map(f -> "Nombre: "+ f.getNombreCliente() + " Apellidos: " +f.getApellidoContacto()+ " Nom repre: " +f.getRepresentanteVentas().getNombre() +
+                    " Apellido1: " + f.getRepresentanteVentas().getApellido1());
+
+
 
             solList.forEach(System.out::println);
 
@@ -215,7 +225,7 @@ class TestExamenStream {
     /**
      * TEST4
      * Devuelve un listado de todos los pedidos que fueron rechazados en 2009 ordenados por fecha descendiente. Mostrando la información de fecha de pedido en formato yyyy-MM-dd, nombre de cliente
-     * estado, representante de ventas, estado.
+     * estado, representante de ventas.
      */
     @Test
     void test4() {
@@ -238,7 +248,10 @@ class TestExamenStream {
             }
 
             //TODO STREAMS
-            var solList = list.stream();
+            var solList = list.stream().filter(p -> p.getFechaPedido().before(inicio2010) && p.getFechaPedido().after(fin2008) && p.getEstado().equals("Rechazado"))
+                    .sorted(comparing(Pedido::getFechaPedido).reversed())
+                    .map(p -> "Fecha pedido: " + p.getFechaPedido() + " NombreClie: "+ p.getCliente().getNombreCliente() + " Estado: " + p.getEstado() +
+                            " NombreRep: " + p.getCliente().getRepresentanteVentas().getNombre());
 
             solList.forEach(System.out::println);
 
@@ -264,7 +277,8 @@ class TestExamenStream {
             List<Cliente> list = clienteHome.findAll();
 
             //TODO STREAMS
-            var solList = list.stream();
+            var solList = list.stream().filter(c -> !c.getPais().equals("Spain"))
+                    .map(f -> "Nombre: "+ f.getNombreCliente() + " Pais: "+ f.getPais());
 
             solList.forEach(System.out::println);
 

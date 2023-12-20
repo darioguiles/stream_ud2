@@ -205,8 +205,8 @@ class TestExamenStream {
             List<Cliente> list = clienteHome.findAll();
 
             //TODO STREAMS
-            var solList = list.stream().sorted(comparing( (Cliente p) -> p.getRepresentanteVentas().getApellido1())
-                    .thenComparing(comparing(Cliente::getNombreCliente)))
+            var solList = list.stream().sorted(comparing( (Cliente p) -> p.getRepresentanteVentas().getApellido1()) //Aqui falta .reverseOrder() o reversed
+                    .thenComparing(comparing(Cliente::getNombreCliente))) 
                     .map(f -> "Nombre: "+ f.getNombreCliente() + " Apellidos: " +f.getApellidoContacto()+ " Nom repre: " +f.getRepresentanteVentas().getNombre() +
                     " Apellido1: " + f.getRepresentanteVentas().getApellido1());
 

@@ -147,7 +147,16 @@ class TestExamenStream {
             var solList = list.stream()
                     .filter(ofi -> ofi.getPais().equals("España"))
                     .map(f -> "Nombre Oficina: "+ f.getCiudad() + " Tlf: " +f.getTelefono())
-                    .sorted();
+                    .sorted(); 
+
+            /*
+            Corrección:
+
+            .filter(ofi -> ofi.getPais().equals("España"))
+                    .sorted(comparing(oficina -> oficina.getCiudad())) //<------ Añadiendo una ordenación alfabetica descendente
+                    .map(f -> "Nombre Oficina: "+ f.getCiudad() + " Tlf: " +f.getTelefono());
+                    // si hay duda, probar meter el .reverseOrder() o .reverse() dentro de
+            */
 
             solList.forEach(System.out::println);
 
@@ -179,6 +188,8 @@ class TestExamenStream {
                     .filter(ofi -> ofi.getJefe()!=null && ofi.getJefe().getCodigoEmpleado()==7)
                     .map(f -> "Nombre : "+ f.getNombre() + " Apellidos: " +f.getApellido1()+", "+f.getApellido2() + " Email: " +f.getEmail() + " Cod jefe: " + f.getJefe().getCodigoEmpleado());
 
+            //BIEN
+            
             solList.forEach(System.out::println);
 
             empleadoHome.commitTransaction();
@@ -247,6 +258,7 @@ class TestExamenStream {
                 throw new RuntimeException(e);
             }
 
+            // BIEN
             //TODO STREAMS
             var solList = list.stream().filter(p -> p.getFechaPedido().before(inicio2010) && p.getFechaPedido().after(fin2008) && p.getEstado().equals("Rechazado"))
                     .sorted(comparing(Pedido::getFechaPedido).reversed())
@@ -279,7 +291,14 @@ class TestExamenStream {
             //TODO STREAMS
             var solList = list.stream().filter(c -> !c.getPais().equals("Spain"))
                     .map(f -> "Nombre: "+ f.getNombreCliente() + " Pais: "+ f.getPais());
+            /*
+            Para que sea correcto habria que hacer lo siguiente: 
+            var solList = list.stream().filter(c -> !c.getPais().equals("Spain"))
+                    .sorted(comparing(Cliente::getNombreCliente)) <------ Añadimos esta linea para ordenar por nombre (Alfabéticamente)
+                    .map(f -> "Nombre: "+ f.getNombreCliente() + " Pais: "+ f.getPais());
+            */
 
+            
             solList.forEach(System.out::println);
 
             clienteHome.commitTransaction();
